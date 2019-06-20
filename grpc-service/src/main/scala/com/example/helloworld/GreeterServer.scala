@@ -13,10 +13,7 @@ import scala.concurrent.{ExecutionContext, Future}
 object GreeterServer {
 
   def main(args: Array[String]): Unit = {
-    val conf = ConfigFactory.parseString("akka.http.server.preview.enable-http2 = on")
-      .withFallback(ConfigFactory.defaultApplication())
-
-    val system: ActorSystem = ActorSystem("GreeterServer", conf)
+    val system: ActorSystem = ActorSystem("GreeterServer")
     new GreeterServer(system).run()
   }
 }
@@ -31,7 +28,7 @@ class GreeterServer(system: ActorSystem) {
     val service: HttpRequest => Future[HttpResponse] =
       GreeterServiceHandler(new GreeterServiceImpl(mat, system.log))
 
-    val bound = Http().bindAndHandleAsync(
+    val bound = Http2().bindAndHandleAsync(
       service,
       interface = "0.0.0.0",
       port = 8080,
