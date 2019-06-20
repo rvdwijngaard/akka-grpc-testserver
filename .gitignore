@@ -1,0 +1,6 @@
+.idea
+/grpc-service/target/
+/http-to-grpc/target/
+/project/project/
+/project/target/
+/target/
